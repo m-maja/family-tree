@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+<head>
+    <title> Visualize your family tree </title>
+    <link rel="stylesheet" href="main.css"/>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body onload="addAncestor()">
+<div id="header">
+    Family Name
+</div>
+<div id="control_panel">
+    <div class="section">
+        Control Panel
+    </div>
+    <button id="add_child" type="button" class="btn btn-primary" data-toggle="modal" data-target="#addChildModal">
+        Add Child
+    </button>
+    <button id="remove_node" type="button" class="btn btn-danger">
+        Remove Node
+    </button>
+    <button id="zoom_in" type="button" class="btn btn-light">
+        Zoom In
+    </button>
+    <button id="zoom_out" type="button" class="btn btn-light">
+        Zoom Out
+    </button>
+    <div class="section">
+        Information Panel
+    </div>
+    <div id="information_panel">
+
+    </div>
+</div>
+<div id="divider">
+
+</div>
+<div id="main">
+    <canvas id="canvas"></canvas>
+</div>
+
+<!-- Modal on load-->
+<div class="modal fade" id="enterFamilyName" tabindex="-1" role="dialog" aria-labelledby="enterFamilyName" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="name_input">Name:</label>
+                        <input type="text" class="form-control" id="first_name_input">
+                        <label for="name_input">Last name:</label>
+                        <input type="text" class="form-control" id="last_name_input">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="add_family_name_ok" type="button" class="btn btn-primary" data-dismiss="modal">Add ancestor</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for adding a child -->
+<div class="modal fade" id="addChildModal" tabindex="-1" role="dialog" aria-labelledby="addChildModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="name_input">Name:</label>
+                        <input type="text" class="form-control" id="name_input">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button id="add_child_ok" type="button" class="btn btn-primary" data-dismiss="modal">Add child</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="tree.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
