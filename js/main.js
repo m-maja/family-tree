@@ -232,7 +232,7 @@ const appendChild = (node, member) => {
 const renderChild = ({ firstname, lastname, image, selected }) =>
   `
     <div class="child-holder">
-        <div class="child ${selected ? 'selected' : ''}">
+        <div class="child ${selected ? 'selected' : ''}" onclick="setSelectedNode(this)">
             <img src="${image ? image : 'assets/placeholder.svg'}" alt="Picture">
             <p>${firstname} ${lastname}</p>
         </div>
@@ -246,6 +246,27 @@ const render = (node, index = 0) => {
   }
 
   return result;
+};
+
+var setSelectedNode = function (element) {
+    window.currentNode.selected(false);
+    window.currentNode.data.selected = false;
+    var node = getNodeByName(element.lastElementChild.textContent)
+    node.selected(true);
+    node.data.selected = true;
+    window.currentNode = node;
+    TREE.clear(context);
+    TREE.draw(context, window.rootNode);
+    memberSelect(node.data);
+    visualize();
+};
+
+var getNodeByName = function (name) {
+    for (const node of getNodes(window.rootNode)) {
+        if (node.text === name){
+          return node;
+        }
+    }
 };
 
 const visualize = () => document.getElementById('visual-context').innerHTML = render(window.rootNode.data);
