@@ -1,101 +1,87 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title> Visualize your family tree </title>
-    <link rel="stylesheet" href="main.css"/>
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Family Tree</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/lodash.min.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/tree.js"></script>
+    <script src="js/main.js"></script>
 </head>
-<body onload="addAncestor()">
-<div id="header">
-    Family Name
-</div>
-<div id="control_panel">
-    <div class="section">
-        Control Panel
-    </div>
-    <button id="add_child" type="button" class="btn btn-primary" data-toggle="modal" data-target="#addChildModal">
-        Add Child
-    </button>
-    <button id="remove_node" type="button" class="btn btn-danger">
-        Remove Node
-    </button>
-    <button id="zoom_in" type="button" class="btn btn-light">
-        Zoom In
-    </button>
-    <button id="zoom_out" type="button" class="btn btn-light">
-        Zoom Out
-    </button>
-    <div class="section">
-        Information Panel
-    </div>
-    <div id="information_panel">
+<body onload="init()">
+<header>
+    <h3 class="text-uppercase">Family Tree</h3>
+</header>
+<section>
+    <aside>
+        <div class="sidebar-controls">
+            <h5 class="text-uppercase">Control actions</h5>
+            <button class="btn btn-block text-uppercase add" data-toggle="modal" data-target="#add">Add</button>
+            <button class="btn btn-block text-uppercase delete" id="remove">Remove</button>
+        </div>
+        <div class="sidebar-info">
+            <h5 class="text-uppercase">Information</h5>
+            <p>First Name: <span id="sidebar-info-firstname" class="font-weight-bold"></span></p>
+            <p>Last Name: <span id="sidebar-info-lastname" class="font-weight-bold"></span></p>
+            <img id="sidebar-info-image" src="./assets/placeholder.svg" />
+        </div>
+    </aside>
+    <main id="main">
+        <canvas id="canvas" class="view active"></canvas>
+        <div id="visual-context" class="view"></div>
+        <button type="button" id="switch-view" class="btn btn-light rounded-circle">
+            <i class="fa fa-exchange"></i>
+        </button>
+    </main>
+</section>
 
-    </div>
-</div>
-<div id="divider">
-
-</div>
-<div id="main">
-    <canvas id="canvas"></canvas>
-</div>
-
-<!-- Modal on load-->
-<div class="modal fade" id="enterFamilyName" tabindex="-1" role="dialog" aria-labelledby="enterFamilyName" aria-hidden="true" data-backdrop="static">
+<!-- Modal -->
+<div id="add" class="modal fade" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <form class="modal-content" id="modalForm">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title text-uppercase text-info">Personal Details</h5>
+                <button type="button" id="modalClose" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="name_input">Name:</label>
-                        <input type="text" class="form-control" id="first_name_input">
-                        <label for="name_input">Last name:</label>
-                        <input type="text" class="form-control" id="last_name_input">
+                <div>
+                    <div id="dropArea" class="drop-area">
+                        <div class="preview">
+                            <img id="image" src="" />
+                            <button type="button" class="close" id="resetImage">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <p class="text-info">
+                            Drag &amp; Drop Picture Here <br />
+                            <button type="button" class="btn btn-block bg-light text-info border-info" id="selectFile">
+                                or select file
+                            </button>
+                        </p>
+                        <input type="file" accept="image/*" id="imageInput" hidden />
                     </div>
-                </form>
+                </div>
+                <div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="firstname" placeholder="Firstname" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="lastname" placeholder="Lastname" required>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
-                <button id="add_family_name_ok" type="button" class="btn btn-primary" data-dismiss="modal">Add ancestor</button>
+                <button type="submit" class="btn btn-primary btn-block" id="modalSubmit">Save</button>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 
-<!-- Modal for adding a child -->
-<div class="modal fade" id="addChildModal" tabindex="-1" role="dialog" aria-labelledby="addChildModal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="name_input">Name:</label>
-                        <input type="text" class="form-control" id="name_input">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button id="add_child_ok" type="button" class="btn btn-primary" data-dismiss="modal">Add child</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script src="tree.js"></script>
-<script src="main.js"></script>
 </body>
 </html>

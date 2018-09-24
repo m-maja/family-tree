@@ -1,8 +1,3 @@
-//TREE.js is a library for creating and drawing properly displayed family trees on the HTML canvas element.
-//This is a work in progress.
-//Authors: Andy MacDonald
-//16 June 2015
-//--------------------------------------------------------------------------------------------------------
 var TREE = (function () {
     "use strict";
     var uID = 0,
