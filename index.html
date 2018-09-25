@@ -27,6 +27,7 @@
             <h5 class="text-uppercase">Information</h5>
             <p>First Name: <span id="sidebar-info-firstname" class="font-weight-bold"></span></p>
             <p>Last Name: <span id="sidebar-info-lastname" class="font-weight-bold"></span></p>
+            <button id="btnEdit"class="btn btn-block text-uppercase add" data-toggle="modal" data-target="#edit">Edit</button>
             <img id="sidebar-info-image" src="./assets/placeholder.svg" />
         </div>
     </aside>
@@ -72,7 +73,7 @@
                         <input type="text" class="form-control" id="firstname" placeholder="Firstname" required>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="lastname" placeholder="Lastname" required>
+                        <input type="text" class="form-control" id="lastname" placeholder="Lastname" value="DefFamName" required>
                     </div>
                 </div>
             </div>
@@ -82,6 +83,30 @@
         </form>
     </div>
 </div>
-
+<div id="edit" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form class="modal-content" id="editForm">
+            <div class="modal-header">
+                <h5 class="modal-title text-uppercase text-info">Edit member's info</h5>
+                <button type="button" id="editModalClose" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="editFirstname" placeholder="Firstname" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="editLastname" placeholder="Lastname" value="DefFamName" required>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary btn-block" id="modalSubmit">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
 </body>
 </html>

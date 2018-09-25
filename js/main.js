@@ -49,6 +49,7 @@ window.rootNode = null;
 const init = () => {
   const modalClose = document.getElementById('modalClose');
   const modalForm = document.getElementById('modalForm');
+  const editNode = document.getElementById('editNode');
   const remove = document.getElementById('remove');
   const dropArea = document.getElementById('dropArea');
   const image = document.getElementById('image');
@@ -58,6 +59,7 @@ const init = () => {
   const firstname = document.getElementById('firstname');
   const lastname = document.getElementById('lastname');
   const switchView = document.getElementById('switch-view');
+  const btnEdit = document.getElementById('btnEdit');
   const preventDefaults = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -90,7 +92,10 @@ const init = () => {
   ['dragleave', 'drop'].forEach(eventName => {
     dropArea.addEventListener(eventName, unhighlight, false);
   });
-
+  btnEdit.addEventListener('click', function(){
+    document.getElementById('editFirstname').value = window.currentNode.data.firstname;
+    document.getElementById('editLastname').value = window.currentNode.data.lastname;
+  });
   dropArea.addEventListener('drop', handleDrop, false);
   imageInput.addEventListener('change', handleDrop, false);
   selectFile.addEventListener('click', () => imageInput.click(), false);
@@ -104,7 +109,7 @@ const init = () => {
     image.src = '';
     imageInput.value = '';
     firstname.value = '';
-    lastname.value = '';
+    // lastname.value = '';
   }, true);
 
   switchView.addEventListener('click', () => {
@@ -114,6 +119,7 @@ const init = () => {
   }, false);
   modalForm.addEventListener('submit', addMember, true);
   remove.addEventListener('click', removeMember, true);
+  editForm.addEventListener('submit', editMember, true);
   initTree();
   visualize();
 };
@@ -196,15 +202,33 @@ const removeMember = () => {
   visualize();
 };
 
+const editMember = (e) => {
+
+  e.preventDefault();
+  let editFirstname = document.getElementById('editFirstname').value,
+      editLastname = document.getElementById('editLastname').value;
+  window.currentNode.data.firstname = editFirstname;
+  window.currentNode.data.lastname = editLastname;
+  current = window.currentNode;
+  memberSelect(current);
+  window.rootNode = populate();
+  // window.currentNode = current;
+  // window.currentNode.selected = true;
+  // window.currentNode.data.selected = true;
+  TREE.clear(context);
+  TREE.draw(context, window.rootNode);
+  visualize();
+};
+
 const getNodes = (node) => node ? TREE.getNodeList(node) : [];
 
 const createdChild = ({ firstname, lastname, image }) => TREE.create(firstname + ' ' + lastname);
-
 const memberSelect = (member) => {
   const firstname = document.getElementById('sidebar-info-firstname');
   const lastname = document.getElementById('sidebar-info-lastname');
   const image = document.getElementById('sidebar-info-image');
-
+  // member.firstname="sase";
+  // console.log(TREE);
   firstname.innerHTML = member.firstname || '';
   lastname.innerHTML = member.lastname || '';
   image.src = member.image ? member.image : 'assets/placeholder.svg';
