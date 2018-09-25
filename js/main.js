@@ -209,14 +209,16 @@ const editMember = (e) => {
       editLastname = document.getElementById('editLastname').value;
   window.currentNode.data.firstname = editFirstname;
   window.currentNode.data.lastname = editLastname;
-  current = window.currentNode;
-  memberSelect(current);
+  memberSelect(window.rootNode);
+  window.currentNode.selected(false);
+  window.currentNode.data.selected = false;
   window.rootNode = populate();
-  // window.currentNode = current;
-  // window.currentNode.selected = true;
-  // window.currentNode.data.selected = true;
+  window.currentNode=window.rootNode;
+  window.currentNode.selected(true);
+  window.currentNode.data.selected = true;
   TREE.clear(context);
   TREE.draw(context, window.rootNode);
+  $("#edit").modal('hide');
   visualize();
 };
 
